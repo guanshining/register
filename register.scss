@@ -1,0 +1,60 @@
+html,body{
+	margin: 0;
+	padding: 0;
+	background: black;
+}
+input,button,select,textarea{
+	outline:none
+}
+.regisgter{
+	background: white;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkittransform: translate(-50%,-50%);
+	transform: translate(-50%,-50%);
+	padding: 20px;
+	div{
+		margin-bottom: 10px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		label{
+			font-size: 12px;
+			margin-right: 20px;
+		}
+		input,select{
+			border: 1px solid #b7b7b7;
+			border-radius: 3px;
+			padding: 5px;
+			&.error{
+				border-color:red;
+			}
+		}
+		input{
+			width: 63%;
+
+		}
+	}
+	.verificationCodeBox{
+		float: right;
+		background: #dcdcdc;
+		padding: 5px 10px;
+		border: 1px solid #b1b1b1;
+		color: #999;
+		margin: 0;
+		cursor: pointer;
+		user-select: none;
+	}
+	.btn{
+		font-size: 18px;
+		color: white;
+		background: orange;
+		text-align: center;
+		padding: 5px;
+		border-radius: 5px;
+		margin: 5px 0 0;
+		user-select: none;
+		cursor: pointer;
+	}
+}

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>一个PC注册页</title>
+</head>
+<link rel="stylesheet" type="text/css" href="register.css">
+<body>
+	<!-- /*
+			没啥审美，长的丑了些，见谅
+		*/ -->
+	<section class="regisgter">
+		<div class="name">
+			<label for='name'>用户名</label>
+			<input type="text" id='name' name="name" placeholder="请输入用户名" maxlength="9">
+		</div>
+		<div class="email">
+			<label for='email'>邮箱</label>
+			<input type="email" id='email' name="email" placeholder="请输邮箱">
+		</div>
+		<!-- <div class="name">
+			<label for='password'>密码</label>
+			<input type="password" id='password' name="password" placeholder="请输入密码">
+		</div> -->
+		<div class="phoneNumbner">
+			<label for='phoneNumbner'>电话号码</label>
+			<input type="number" id='phoneNumbner' name="phoneNumbner" placeholder="请输入手机号码">
+		</div>
+		<div class="verificationCode">
+			<label name='verificationCode'>验证码</label>
+			<input type="text" id='verificationCode' name="verificationCode" placeholder="请输入验证码">
+		</div>
+		<p class="verificationCodeBox"></p>	
+		<br style="clear: both;" />
+		<p class="btn">点击注册</p>
+	</section>
+
+	<script type="text/javascript">
+		class Register {
+			constructor(){
+				// 这里定义一些自定义属性和获取元素
+				this.DOM = {
+					'NAME'     : document.getElementById('name'),
+					'PASSWORD' : document.getElementById('password'),
+					'PHONE'    : document.getElementById('phoneNumbner'),
+					'CODE'     : document.getElementById('verificationCode'),
+					'EMAIL'    : document.getElementById('email'),
+					'HABCODE'  : document.getElementsByClassName('verificationCodeBox')[0],
+					'BTN'      : document.getElementsByClassName('btn')[0]
+				}
+				this.PRICE = {
+					'CODE' : this.codeRandom()
+				}
+				this.LIST = {
+					'INPUT' : document.getElementsByTagName('input')
+				}
+				this.DOM.HABCODE.innerHTML = this.PRICE.CODE;
+			};
+			// 验证用户名
+			checkName(val){
+				// 用户名首字母不能是数字或下划线，此处不限字符长度
+				let reg = /\w+|[\u4e00-\u9fa5]|\w+/img;
+				return reg.test(val); 
+			};
+			// 验证手机号码
+			checkPhone(val){
+				let reg = /^1\d{10}$/;
+				return reg.test(val); 
+			};
+			// 验证邮箱
+			checkEmail(val){
+				let reg = /^\w{6,18}@[0-9a-zA-Z]{2,10}\.com|cn$/;
+				return reg.test(val); 
+			}
+			// 验证中介
+			check(fn,self){
+				if(typeof fn !== 'function' ) return;
+				let attr = self.getAttribute('name');
+				if(fn(self.value) == false){
+					self.classList.add('error');
+				}else{
+					self.classList.remove('error');
+				}
+			}
+			// 验证码
+			codeRandom(){
+				let str = 'abcdefghrgklmnopqrstuvwxyzABCDEFGHRGKLMNOPQRSTUVWXYZ0123456789';
+				let newStr = '';
+				while(newStr.length < 4){
+					let strRandom = Math.floor(Math.random() * 62);//得出的是随机索引
+					if(newStr.indexOf(str[strRandom]) == -1){// 确保不重复
+						newStr += str[strRandom]
+					}
+				}
+				return newStr;
+			};
+			every(){
+				let ags = Array.prototype.slice.call(this.LIST.INPUT);
+				let str = '';
+				str = ags.every(function(item,index,ary){// 全部为真才为真
+					if(item.value !== '' && item.getAttribute('class') !== "error") return true;
+				})
+				if(str){
+					alert('恭喜 成功')
+				}
+			}
+			// 事件
+			hadle(){
+				let _this = this;
+				// 用户名
+				this.DOM.NAME.onblur = function(){
+					_this.check(_this.checkName,this);
+					_this.every();
+				};
+				// 手机号码
+				this.DOM.PHONE.onblur = function(){
+					_this.check(_this.checkPhone,this);
+					_this.every();
+				}
+				// 验证邮箱
+				this.DOM.EMAIL.onblur = function(){
+					_this.check(_this.checkEmail,this);
+					_this.every();
+				}
+				// 刷新验证码
+				this.DOM.HABCODE.onclick = function(){
+					_this.PRICE.CODE = _this.codeRandom();
+					_this.DOM.HABCODE.innerHTML = _this.PRICE.CODE;
+				}
+				this.DOM.CODE.onblur = function(){
+					if(this.value !== _this.PRICE.CODE){
+						this.classList.add('error');
+					}else{
+						this.classList.remove('error');
+					}
+					_this.every();
+				}
+				this.DOM.BTN.onclick = function(){
+					for(let i = 0 ; i < _this.LIST.INPUT.length ; i++ ){
+						let cur = _this.LIST.INPUT[i];
+						if(cur.value == '' || cur.getAttribute('class') == "error"){
+							cur.classList.add('error');
+							return;
+						}else{
+							cur.classList.remove('error');
+						}
+					}
+					_this.every();
+				}
+			};
+			// 初始化
+			init(){
+				this.hadle();
+			}
+
+		}
+		let register = new Register();
+			register.init();
+
+	</script>
+
+</body>
+</html>
