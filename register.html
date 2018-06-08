@@ -57,7 +57,6 @@
 			};
 			// 验证用户名
 			checkName(val){
-				// 用户名首字母不能是数字或下划线，此处不限字符长度
 				let reg = /\w+|[\u4e00-\u9fa5]|\w+/img;
 				return reg.test(val); 
 			};
